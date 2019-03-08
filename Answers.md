@@ -5,11 +5,11 @@
 
 1.  Describe `actions`, `reducers` and the `store` and their role in Redux. What does each piece do? Why is the store known as a 'single source of truth' in a redux application?
 
-    Actions are an object created by an action creator function that have a type and sometimes a payload. The reducer takes in the action and does something (or not) to the state based on the type. The store is created from the reducer and holds the state of the application. It is considered the single source of truth for the application because it is the only place where the state is held.
+    Actions are objects created by an action creator function that have a type and sometimes a payload. The reducer takes in the action and does something (or not) to the state based on the type. The store is created from the reducer and holds the state of the application. It is considered the single source of truth for the application because it is the only place where the state is held.
 
 1.  What is the difference between Application state and Component state? When would be a good time to use one over the other?
 
-    Application state is global to the application, and component state is local to a component. Component state is like what we've been doing with react: the state is local to a component, and needs to be passed to other components through props. We get application state with redux: the state of the entire application is held in one place, and all the components that are connected to it can access it.
+    Application state is global to the application, and component state is local to a component. Component state is like what we've been doing with react: the state is local to a component, and needs to be passed to other components through props. We get application state with redux: the state of the entire application is held in one place, and all the components that are connected to it can access it. Application state is preferable, but an example of a good time to use component state would be with forms. The entire application might not need to know about the input text state, so you could keep that local to the form component.
 
 1.  What is middleware?
 
