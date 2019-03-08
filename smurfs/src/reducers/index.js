@@ -75,12 +75,12 @@ export const reducer = (state = initialState, action) => {
     case UPDATING_SMURF:
       return {
         ...state,
-        isUpdating: false,
         isLoading: true
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
+        isUpdating: false,
         isLoading: false,
         smurfs: action.payload
       };

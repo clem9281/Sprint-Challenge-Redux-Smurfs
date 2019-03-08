@@ -8,7 +8,8 @@ class SmurfForm extends React.Component {
     this.state = {
       name: "",
       age: "",
-      height: ""
+      height: "",
+      buttonText: "Add Smurf"
     };
   }
   componentDidMount() {
@@ -19,7 +20,8 @@ class SmurfForm extends React.Component {
           this.setState({
             name: smurf.name,
             age: smurf.age,
-            height: smurf.height
+            height: smurf.height,
+            buttonText: "Update Smurf"
           });
         }
       });
@@ -38,7 +40,7 @@ class SmurfForm extends React.Component {
   };
   render() {
     const { isUpdating } = this.props.state;
-    const { name, age, height } = this.state;
+    const { name, age, height, buttonText } = this.state;
     return (
       <div className="card">
         <form
@@ -65,7 +67,7 @@ class SmurfForm extends React.Component {
             value={height}
             onChange={this.handleChanges}
           />
-          <button>{isUpdating ? "Update Smurf" : "Add Smurf"}</button>
+          <button>{buttonText}</button>
         </form>
       </div>
     );
