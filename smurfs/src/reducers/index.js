@@ -32,8 +32,7 @@ export const reducer = (state = initialState, action) => {
       };
     case ADD_SMURF:
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     case ADD_SMURF_SUCCESS:
       return {
