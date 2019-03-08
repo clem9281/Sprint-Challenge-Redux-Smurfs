@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSmurfs } from "../actions";
+import { getSmurfs, deleteSmurf } from "../actions";
 import "./App.css";
 
 import SmurfForm from "./SmurfForm";
 import Loading from "./Loading";
+import Error from "./Error";
 /*
  to wire this component up you're going to need a few things.
  I'll let you do this part on your own. 
@@ -14,27 +15,31 @@ import Loading from "./Loading";
 class App extends Component {
   componentDidMount() {
     this.props.getSmurfs();
-    console.log(this.props);
   }
   render() {
     const { smurfs, isLoading, error } = this.props.state;
-    if (isLoading) {
-      return <Loading />;
-    }
     if (error) {
-      return <div>{error}</div>;
+      return <Error />;
     }
     return (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <SmurfForm />
+        {isLoading ? <Loading /> : <SmurfForm />}
         <div className="smurfs">
           <ul>
             {smurfs.map(smurf => (
-              <li key={smurf.name}>
+              <li key={smurf.id}>
                 <h3>{smurf.name}</h3>
                 <p>{smurf.age}</p>
                 <p>{smurf.height}</p>
+                <button
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props.deleteSmurf(smurf.id);
+                  }}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
@@ -52,5 +57,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getSmurfs }
+  { getSmurfs, deleteSmurf }
 )(App);
