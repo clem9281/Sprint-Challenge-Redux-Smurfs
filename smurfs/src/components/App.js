@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSmurfs, deleteSmurf } from "../actions";
+import { getSmurfs, deleteSmurf, updateSmurf } from "../actions";
 import "./App.css";
 
 import SmurfForm from "./SmurfForm";
@@ -17,7 +17,13 @@ class App extends Component {
     this.props.getSmurfs();
   }
   render() {
-    const { smurfs, isLoading, error } = this.props.state;
+    const {
+      smurfs,
+      isLoading,
+      error,
+      isUpdating,
+      smurfUpdateId
+    } = this.props.state;
     if (error) {
       return <Error />;
     }
@@ -27,21 +33,34 @@ class App extends Component {
         {isLoading ? <Loading /> : <SmurfForm />}
         <div className="smurfs">
           <ul>
-            {smurfs.map(smurf => (
-              <li key={smurf.id}>
-                <h3>{smurf.name}</h3>
-                <p>{smurf.age}</p>
-                <p>{smurf.height}</p>
-                <button
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.deleteSmurf(smurf.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
+            {smurfs.map(smurf => {
+              if (isUpdating && smurf.id === smurfUpdateId) {
+                return <SmurfForm key={smurf.id} />;
+              }
+              return (
+                <li key={smurf.id}>
+                  <h3>{smurf.name}</h3>
+                  <p>{smurf.age}</p>
+                  <p>{smurf.height}</p>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.deleteSmurf(smurf.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.updateSmurf(smurf.id);
+                    }}
+                  >
+                    Update
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -57,5 +76,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getSmurfs, deleteSmurf }
+  { getSmurfs, deleteSmurf, updateSmurf }
 )(App);

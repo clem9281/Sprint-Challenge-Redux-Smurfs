@@ -6,13 +6,18 @@ import {
   ADD_SMURF_SUCCESS,
   TRY_AGAIN,
   DELETE_SMURF,
-  DELETE_SMURF_SUCCESS
+  DELETE_SMURF_SUCCESS,
+  UPDATE_SMURF,
+  UPDATING_SMURF,
+  UPDATE_SUCCESS
 } from "../actions";
 
 const initialState = {
   smurfs: [],
   isLoading: true,
-  error: null
+  error: null,
+  isUpdating: false,
+  smurfUpdateId: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -56,6 +61,24 @@ export const reducer = (state = initialState, action) => {
         isLoading: true
       };
     case DELETE_SMURF_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        smurfs: action.payload
+      };
+    case UPDATE_SMURF:
+      return {
+        ...state,
+        isUpdating: true,
+        smurfUpdateId: action.payload
+      };
+    case UPDATING_SMURF:
+      return {
+        ...state,
+        isUpdating: false,
+        isLoading: true
+      };
+    case UPDATE_SUCCESS:
       return {
         ...state,
         isLoading: false,

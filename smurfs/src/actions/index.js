@@ -8,6 +8,9 @@ export const ADD_SMURF_SUCCESS = "ADD_SMURF_SUCCESS";
 export const TRY_AGAIN = "TRY_AGAIN";
 export const DELETE_SMURF = "DELETE_SMURF";
 export const DELETE_SMURF_SUCCESS = "DELETE_SMURF_SUCCESS";
+export const UPDATE_SMURF = "UPDATE_SMURF";
+export const UPDATING_SMURF = "UPDATING_SMURF";
+export const UPDATE_SUCCESS = "UPDATE_SUCCESS";
 
 export const getSmurfs = () => dispatch => {
   dispatch({ type: GET_SMURFS });
@@ -46,4 +49,18 @@ export const deleteSmurf = id => dispatch => {
 
 export const tryAgain = () => dispatch => {
   dispatch({ type: TRY_AGAIN });
+};
+
+export const updateSmurf = id => dispatch => {
+  dispatch({ type: UPDATE_SMURF, payload: id });
+};
+
+export const updatingSmurf = (id, newInfo) => dispatch => {
+  dispatch({ type: UPDATE_SMURF });
+  axios
+    .put(`http://localhost:3333/smurfs/${id}`, newInfo)
+    .then(res => dispatch({ type: UPDATE_SUCCESS, payload: res.data }))
+    .catch(err =>
+      dispatch({ type: FAILURE, payload: "We couldn't update that smurf" })
+    );
 };
