@@ -1,5 +1,11 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { getSmurfs, deleteSmurf, updateSmurf } from "../actions";
+import "./App.css";
+
+import SmurfForm from "./SmurfForm";
+import Loading from "./Loading";
+import Error from "./Error";
 /*
  to wire this component up you're going to need a few things.
  I'll let you do this part on your own. 
@@ -7,16 +13,68 @@ import './App.css';
  `How do I ensure that my component links the state to props?`
  */
 class App extends Component {
+  componentDidMount() {
+    this.props.getSmurfs();
+  }
   render() {
+    const {
+      smurfs,
+      isLoading,
+      error,
+      isUpdating,
+      smurfUpdateId
+    } = this.props.state;
+    if (error) {
+      return <Error />;
+    }
     return (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your Redux version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
+        {isLoading ? <Loading /> : <SmurfForm />}
+        <div className="smurfs">
+          <ul>
+            {smurfs.map(smurf => {
+              if (isUpdating && smurf.id === smurfUpdateId) {
+                return <SmurfForm key={smurf.id} />;
+              }
+              return (
+                <li key={smurf.id}>
+                  <h3>{smurf.name}</h3>
+                  <p>{smurf.age}</p>
+                  <p>{smurf.height}</p>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.deleteSmurf(smurf.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.updateSmurf(smurf.id);
+                    }}
+                  >
+                    Update
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    state
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { getSmurfs, deleteSmurf, updateSmurf }
+)(App);
